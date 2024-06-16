@@ -1,1 +1,15 @@
-<p>dashboard works!</p>
+<app-sidepanel (newItemToCreate)="creteNewItem($event)"></app-sidepanel>
+<div class="drag-container">
+  <div
+    *ngFor="let element of initialItems"
+    cdkDrag
+    class="item-container"
+    [cdkDragFreeDragPosition]="element.dragPosition"
+    (cdkDragEnded)="dragEnd($event, element)"
+  >
+    <app-element
+      [element]="element"
+      (connectItem)="connectItem($event)"
+    ></app-element>
+  </div>
+</div>

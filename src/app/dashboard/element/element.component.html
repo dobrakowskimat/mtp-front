@@ -1,1 +1,5 @@
-<p>element works!</p>
+<div class="element" [id]="element.name">
+  <div>{{ element.type }}</div>
+  <div>{{ element.name }}</div>
+  <div (click)="connectNode(element)">connect -></div>
+</div>

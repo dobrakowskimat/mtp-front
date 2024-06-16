@@ -1,0 +1,15 @@
+<form [formGroup]="elementForm" (ngSubmit)="onSubmit()">
+  Connect: {{ data.item.name }}
+
+  <mat-form-field>
+    <mat-label>to:</mat-label>
+    <mat-select formControlName="connection">
+      @for (item of data.items; track item.name) {
+      <mat-option [value]="item">{{ item.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button type="submit">Submit</button>
+</form>
