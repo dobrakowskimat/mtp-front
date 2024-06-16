@@ -1,8 +1,8 @@
-<form [formGroup]="elementForm" (ngSubmit)="onSubmit()">
-  Connect: {{ data.item.name }}
+<form [formGroup]="elementForm" (ngSubmit)="onSubmit()" class="connect-form">
+  Connect: {{ data.item.name }} to:
 
   <mat-form-field>
-    <mat-label>to:</mat-label>
+    <mat-label>Connection Target</mat-label>
     <mat-select formControlName="connection">
       @for (item of data.items; track item.name) {
       <mat-option [value]="item">{{ item.name }}</mat-option>

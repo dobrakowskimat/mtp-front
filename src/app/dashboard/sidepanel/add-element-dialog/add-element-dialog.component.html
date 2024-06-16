@@ -2,17 +2,18 @@
   <h2 mat-dialog-title></h2>
   <mat-dialog-content>
     <p>Add new Item</p>
+    <p>Item Name:</p>
     <mat-form-field>
       <mat-label>Name </mat-label>
-      <input matNativeControl formControlName="name" />
+      <input matInput formControlName="name" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Type </mat-label>
-      <select matNativeControl formControlName="type">
-        <option *ngFor="let type of types | keyvalue" [value]="type.value">
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of types | keyvalue" [value]="type.value">
           {{ type.value }}
-        </option>
-      </select>
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <div formArrayName="fields">
       <!-- @switch (value) { @case (types.Type1) { @for (field of type1Fields; track
@@ -29,21 +30,29 @@
           let i = index
         "
       >
-        <input
+        <mat-form-field
           *ngIf="elementForm.controls.fields.get(item.key)!.disabled === false"
-          type="text"
-          class="form-input"
-          [placeholder]="item.key"
-          [formControlName]="item.key"
-        />
+        >
+          <mat-label>{{ item.key }} </mat-label>
+          <input
+            matInput
+            type="text"
+            [placeholder]="item.key"
+            [formControlName]="item.key"
+          />
+        </mat-form-field>
       </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button (click)="test()">TEST</button>
 
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button type="submit" [disabled]="elementForm.status === 'INVALID'">
+    <button mat-flat-button (click)="onNoClick()">No Thanks</button>
+    <button
+      mat-button
+      type="submit"
+      [disabled]="elementForm.status === 'INVALID'"
+    >
       Submit
     </button>
   </mat-dialog-actions>

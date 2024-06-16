@@ -24,7 +24,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectDialogComponent } from './connect-dialog/connect-dialog.component';
 import { DataService } from './data/data.service';
-import { Subscription } from 'rxjs';
+import { Subscription, distinctUntilChanged } from 'rxjs';
 
 declare var LeaderLine: any;
 
@@ -43,23 +43,31 @@ export class DashboardComponent implements AfterViewInit {
   connections$ = this.dataService.connectionsSubject.asObservable();
   @ViewChildren(ElementComponent, { read: ElementComponent })
   elementsQuery!: QueryList<ElementComponent>;
+  lines: any[] = [];
 
   ngAfterViewInit(): void {
     this.subscription.add(
-      this.connections$.subscribe((connections) =>
-        connections.forEach((connection) => {
-          new LeaderLine(
-            this.findElementRef(connection.from, this.elementsQuery),
-            this.findElementRef(connection.to, this.elementsQuery)
-          );
+      this.connections$
+        .pipe(distinctUntilChanged())
+        .subscribe((connections) => {
+          this.lines.forEach((line) => line.remove());
+          this.lines = [];
+          connections.forEach((connection) => {
+            this.lines.push(
+              new LeaderLine(
+                this.findElementRef(connection.from, this.elementsQuery),
+                this.findElementRef(connection.to, this.elementsQuery)
+              )
+            );
+          });
         })
-      )
     );
     console.log(this.elementsQuery);
   }
   dragEnd(event: CdkDragEnd, element: MTPElement) {
     console.log(event.distance);
     window.resizeBy(1, 1);
+    this.lines.forEach((line) => line.position());
   }
 
   creteNewItem(item: ElementWithFields) {
